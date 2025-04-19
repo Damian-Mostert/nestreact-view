@@ -50,8 +50,8 @@ ClientSide = __decorate([
     (0, nestjsx_1.Use)({})
 ], ClientSide);
 let WelcomePage = class WelcomePage {
-    render({ Client }) {
-        return ((0, jsx_runtime_1.jsxs)("html", { children: [(0, jsx_runtime_1.jsx)("head", { children: (0, jsx_runtime_1.jsx)("title", { children: "Welcome | @damian88/nestjsx" }) }), (0, jsx_runtime_1.jsx)("body", { style: { margin: 0, padding: 0 }, children: (0, jsx_runtime_1.jsx)(Client.Welcome, {}) })] }));
+    render({ Client, props }) {
+        return ((0, jsx_runtime_1.jsxs)("html", { children: [(0, jsx_runtime_1.jsx)("head", { children: (0, jsx_runtime_1.jsx)("title", { children: props.title }) }), (0, jsx_runtime_1.jsx)("body", { style: { margin: 0, padding: 0 }, children: (0, jsx_runtime_1.jsx)(Client.Welcome, {}) })] }));
     }
 };
 __decorate([

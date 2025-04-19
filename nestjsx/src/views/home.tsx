@@ -54,11 +54,11 @@ class ClientSide {
 @Server()
 class WelcomePage {
   @Render()
-  render({ Client }: { Client: ClientSide }) {
+  render({ Client ,props }: { Client: ClientSide, props:{title:string} }) {
     return (
       <html>
         <head>
-          <title>Welcome | @damian88/nestjsx</title>
+          <title>{props.title}</title>
         </head>
         <body style={{ margin: 0, padding: 0 }}>
           <Client.Welcome />

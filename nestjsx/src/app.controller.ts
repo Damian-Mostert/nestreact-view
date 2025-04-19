@@ -7,6 +7,6 @@ export class AppController {
   @Get()
   @Render("home")
   getHello(): any {
-    return this.appService.getHello();
+    return this.appService.getWelcomeProps();
   }
 }

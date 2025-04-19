@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getHello(): any {
+  getWelcomeProps(): any {
     return {
-        hello:"Yess"
+        title:"Welcome | @damian88/nestjsx"
     }
   }
 }
