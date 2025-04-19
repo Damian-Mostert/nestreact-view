@@ -24,13 +24,13 @@
 Install via npm or yarn:
 
 ```bash
-npm install nestjsx
+npm install @damian88/nestjsx
 ```
 
 ## ⚙️ Setup
 In your nest server add the following to your main.ts
 ```ts
-import  NestReactEngin from 'nestjsx';
+import  NestReactEngin from '@damian88/nestjsx';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
@@ -59,7 +59,7 @@ export class ApiController {
 
 ## Template Tools
 ```tsx
-import { Use, Server, Render, Client, Component } from 'nestjsx';
+import { Use, Server, Render, Client, Component } from '@damian88/nestjsx';
 ```
 
 
