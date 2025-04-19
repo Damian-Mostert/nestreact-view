@@ -1,7 +1,7 @@
 import {
   extractClientAndServer,
   extractClientComponentsAndModules
-} from "./chunk-2U2DUGOH.mjs";
+} from "./chunk-7H2K7QKH.mjs";
 
 // src/index.ts
 import ReactDOMServer from "react-dom/server";
