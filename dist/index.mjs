@@ -53,15 +53,15 @@ async function Engine(filePath, options = {}, callback) {
   const { client } = extractClientAndServer(`${filePath}`);
   await import(filePath.replace("src/views", "dist/views").replace(".tsx", ".js"));
   const { components, imports } = extractClientComponentsAndModules(client, global.nestReactBuild.use);
-  const Client = {};
+  const Client2 = {};
   Object.keys(components).map((k) => {
-    Client[k] = function(props) {
+    Client2[k] = function(props) {
       const config = {
         props,
         body: tsToJsString(`${components[k].component}`),
         type: components[k].componentType,
         id: `Elm-${k}`,
-        modules: Object.keys(Object(eval(`${imports}`))).map((k2) => k2).join(", ")
+        modules: Object.keys(nestReactBuild.use).map((k2) => k2).join(", ")
       };
       return React.createElement(React.Fragment, null, [
         React.createElement(components[k].componentType.slice(1, -1), { id: config.id, key: 1 }),
@@ -70,7 +70,7 @@ async function Engine(filePath, options = {}, callback) {
     };
   });
   const element = await global.nestReactBuild.Server.render({
-    Client,
+    Client: Client2,
     props: options
   });
   return callback(null, `<!DOCTYPE html><script defer>${buildClientFromString(`${imports}${readFileSync(join(__dirname, "../client/client.tsx")).toString()}`)}</script>` + ReactDOMServer.renderToString(element));
@@ -96,7 +96,7 @@ function Render() {
     };
   };
 }
-function Client2() {
+function Client() {
   return function(constructor) {
     const instance = new constructor();
     const collected = {};
@@ -162,7 +162,7 @@ function Use(modules) {
   };
 }
 export {
-  Client2 as Client,
+  Client,
   Component,
   Render,
   Server,
