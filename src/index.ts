@@ -38,7 +38,7 @@ export function tsToJsString(tsxCode: string): string {
 async function Engine(filePath:string, options:any = {}, callback:(err:any,response?:string)=>void) {
 	const {client} = extractClientAndServer(`${filePath}`);
 	(await import(filePath.replace("src/views","dist/views").replace(".tsx",".js")));
-	const {components} = extractClientComponentsAndModules(client) 
+	const {components,imports} = extractClientComponentsAndModules(client) 
 	const Client:any = {};
 	Object.keys(components).map(k=>{
 		Client[k] = function(props:any){

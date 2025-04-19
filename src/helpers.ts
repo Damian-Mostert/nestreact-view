@@ -6,7 +6,7 @@ export function extractClientComponentsAndModules(source: string) {
 
 	// 1. Extract @Client class
 	const clientClassRegex =
-		/@Client\(\)\s*@Use\(([\s\S]*?)\)\s*class\s+([A-Za-z0-9_]+)\s*{([\s\S]*?)^\}/gm;
+		/@Client\(\)\s*@Use\([\s\S]*?\)\s*class\s+([A-Za-z0-9_]+)\s*{([\s\S]*?)^\}/gm;
 	const clientMatch = clientClassRegex.exec(source);
 
 	if (!clientMatch) return { components, imports: "" };
@@ -17,7 +17,7 @@ export function extractClientComponentsAndModules(source: string) {
 	try {
 		const useObj = eval(`(${useBody})`);
 		importLines = Object.entries(useObj)
-			.map(([key, mod]) => String(mod).includes("./")?`import ${key} from "${mod}";`: `import * as ${key} from "${mod}";`)
+			.map(([key, mod]) => String(mod).includes("./")||String(mod).includes("@")?`import ${key} from "${mod}";`: `import * as ${key} from "${mod}";`)
 			.join("\n");
 	} catch (err) {
 		console.error("Failed to parse @Use body:", err);
