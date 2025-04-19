@@ -61,7 +61,7 @@ Update your tsconfig
 In your nest server add the following to your main.ts
 
 ```ts
-import  NestReactEngin from '@damian88/nestjsx';
+import  NestReactEngine from '@damian88/nestjsx';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
