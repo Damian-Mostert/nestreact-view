@@ -1,6 +1,5 @@
 import { buildSync, transformSync } from "esbuild";
 export function buildClientFromString(code:string) {
-  console.log('in',code)
   try {
     const result = buildSync({
       stdin: {

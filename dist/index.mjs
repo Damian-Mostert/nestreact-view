@@ -10,7 +10,6 @@ import React from "react";
 // client/build.ts
 import { buildSync, transformSync } from "esbuild";
 function buildClientFromString(code) {
-  console.log("in", code);
   try {
     const result = buildSync({
       stdin: {
