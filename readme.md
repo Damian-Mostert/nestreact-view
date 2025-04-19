@@ -30,11 +30,17 @@ npm install nestreact-view
 ## ⚙️ Setup
 In your nest server add the following to your main.ts
 ```ts
-import Engine,{script} from 'nestreact-view';
-//Initialize view engine
-app.set("views", join(process.cwd(),"src", "views"));
-app.engine('tsx', Engine)
-app.set("view engine", "tsx");
+import  NestReactEngin from 'nestreact-view';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  NestReactEngine(app);
+  await app.listen(process.env.PORT ?? 3000);
+}
+bootstrap();
+
 ```
 you can now use `res.render("templateName",{props})` to render a tsx template as "src/views/${templateName}".tsx, or you can use built in nest functions to render a template:
 ```tsx
