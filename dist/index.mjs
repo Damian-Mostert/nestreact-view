@@ -73,7 +73,7 @@ async function Engine(filePath, options = {}, callback) {
     Client: Client2,
     props: options
   });
-  return callback(null, `<!DOCTYPE html><script defer>${buildClientFromString(`${imports}${readFileSync(join(__dirname, "../client/client.tsx")).toString()}`)}</script>` + ReactDOMServer.renderToString(element));
+  return callback(null, `<!DOCTYPE html><script defer>${buildClientFromString(`${imports}${readFileSync(join(__dirname, "../client/client.tsx")).toString().replace("{{MODULES}}", Object.keys(nestReactBuild.use).map((k) => k).join(", "))}`)}</script>` + ReactDOMServer.renderToString(element));
 }
 var index_default = Engine;
 function Component(type = '"div"') {
