@@ -1,6 +1,6 @@
 {
   "name": "nestreact-view",
-  "version": "0.0.41",
+  "version": "0.0.42",
   "main": "./dist/index.js",
   "types": "./dist/index.ts",
   "exports": {
@@ -8,6 +8,10 @@
       "require": "./dist/index.js",
       "import": "./dist/index.js"
     }
+  },
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/Damian-Mostert/nestreact-view"
   },
   "keywords": [
     "nest",
