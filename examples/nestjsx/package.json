@@ -1,50 +1,32 @@
 {
-  "name": "@damian88/nestjsx",
-  "version": "0.0.7",
-  "main": "./dist/index.js",
-  "types": "./dist/index.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.js"
-    }
-  },
-  "repository": {
-    "type": "github",
-    "url": "git+https://github.com/Damian-Mostert/nestreact-view.git"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "keywords": [
-    "nest",
-    "react",
-    "engine",
-    "nestreact-view",
-    "view"
-  ],
+  "name": "@damian88/nestjsx-example",
+  "version": "0.0.1",
   "description": "",
-  "author": "Damian Mostert",
+  "author": "",
   "private": false,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "tsup src --dts --format esm,cjs --out-dir dist"
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@damian88/nestjsx": "^0.0.3",
     "@nestjs/common": "^11.0.1",
-    "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
-    "@nestjs/mongoose": "^11.0.3",
     "@nestjs/platform-express": "^11.0.1",
-    "@nestjs/serve-static": "^5.0.3",
-    "@nestjs/typeorm": "^11.0.0",
-    "@types/react": "^19.1.1",
-    "@types/react-dom": "^19.1.2",
-    "@vitejs/plugin-react": "^4.3.4",
-    "esbuild": "^0.25.2",
-    "react": "19.1.0",
-    "react-dom": "^19.1.0",
-    "tsup": "^8.4.0"
+    "nestreact-view": "^0.0.79",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -58,13 +40,12 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.7",
     "@types/supertest": "^6.0.2",
-    "autoprefixer": "^10.4.21",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
     "globals": "^16.0.0",
     "jest": "^29.7.0",
-    "postcss": "^8.5.3",
+    "prettier": "^3.4.2",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
@@ -73,6 +54,9 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "jest": {
     "moduleFileExtensions": [
