@@ -9,7 +9,7 @@ import React from "react";
 import { readFileSync } from "fs";
 import { join } from "path";
 import esbuild from "esbuild";
-nestReactBuild = { Client: {}, Server: {}, use: {} };
+global.nestReactBuild = { Client: {}, Server: {}, use: {} };
 var script = [
   "/__nestreact.js",
   (req, res) => {

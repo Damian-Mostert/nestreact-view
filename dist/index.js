@@ -44,7 +44,7 @@ var import_server = __toESM(require("react-dom/server"));
 
 // src/helpers.ts
 var import_fs = require("fs");
-function extractClientComponentsAndModules(source, nestReactBuild2) {
+function extractClientComponentsAndModules(source, nestReactBuild) {
   const components = {};
   let importLines = "";
   const clientClassRegex = /@Client\(\)\s*@Use\([\s\S]*?\)\s*class\s+([A-Za-z0-9_]+)\s*{([\s\S]*?)^\}/gm;
@@ -52,7 +52,7 @@ function extractClientComponentsAndModules(source, nestReactBuild2) {
   if (!clientMatch) return { components, imports: "" };
   const [, useBody, className, classBody] = clientMatch;
   try {
-    const useObj = nestReactBuild2?.use;
+    const useObj = nestReactBuild?.use;
     importLines = Object.entries(useObj ? useObj : {}).map(([key, mod]) => String(mod).includes("./") || String(mod).includes("@") ? `import ${key} from "${mod}";` : `import * as ${key} from "${mod}";`).join("\n");
   } catch (err) {
     console.error("Failed to parse @Use body:", err);
@@ -121,7 +121,7 @@ var import_react = __toESM(require("react"));
 var import_fs2 = require("fs");
 var import_path = require("path");
 var import_esbuild = __toESM(require("esbuild"));
-nestReactBuild = { Client: {}, Server: {}, use: {} };
+global.nestReactBuild = { Client: {}, Server: {}, use: {} };
 var script = [
   "/__nestreact.js",
   (req, res) => {
