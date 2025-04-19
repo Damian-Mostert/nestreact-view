@@ -28,7 +28,38 @@ npm install @damian88/nestjsx
 ```
 
 ## ⚙️ Setup
+Update your tsconfig
+```json
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ESNext",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@/*": ["src/views/*"],
+    }
+  },
+  "include": ["src/**/*"]
+}
+
+```
 In your nest server add the following to your main.ts
+
 ```ts
 import  NestReactEngin from '@damian88/nestjsx';
 import { NestFactory } from '@nestjs/core';
