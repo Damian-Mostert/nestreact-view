@@ -21,6 +21,7 @@ function buildClientFromString(code) {
       minify: false,
       write: false,
       sourcemap: false,
+      jsx: "transform",
       target: ["es2017"],
       format: "iife",
       platform: "browser"
