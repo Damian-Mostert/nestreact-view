@@ -28,7 +28,7 @@ npm install @damian88/nestjsx
 ```
 Or clone my boiler plate
 ```bash
-npm pack @damian88/nestjsx-example && mkdir -p examples/nestjsx && tar -xzf $(ls *.tgz) -C examples/nestjsx --strip-components=1 && rm $(ls *.tgz)
+npm pack @damian88/nestjsx-example && mkdir -p nestjsx && tar -xzf $(ls *.tgz) -C nestjsx --strip-components=1 && rm $(ls *.tgz) && cd nestjsx && npm install && cd ..
 ```
 
 

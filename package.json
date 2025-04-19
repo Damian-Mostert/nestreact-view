@@ -1,6 +1,6 @@
 {
   "name": "@damian88/nestjsx",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "./dist/index.js",
   "types": "./dist/index.ts",
   "exports": {
