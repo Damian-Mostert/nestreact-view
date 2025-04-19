@@ -27,6 +27,7 @@ async function Engine(filePath:string, options:any = {}, callback:(err:any,respo
 				body:tsToJsString(`${components[k].component}`),
 				type:components[k].componentType,
 				id:`Elm-${k}`,
+				modules:Object.keys(Object(eval(`${imports}`))).map(k=>k).join(", ")
 			}
 			return React.createElement(React.Fragment,null,[
 				React.createElement(components[k].componentType.slice(1,-1),{id:config.id,key:1}),

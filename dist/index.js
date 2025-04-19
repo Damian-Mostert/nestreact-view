@@ -30,7 +30,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.ts
 var index_exports = {};
 __export(index_exports, {
-  Client: () => Client,
+  Client: () => Client2,
   Component: () => Component,
   Render: () => Render,
   Server: () => Server,
@@ -99,16 +99,16 @@ function extractClassBlock(content, decorator) {
   }
   return sliced.slice(0, end + 1);
 }
-function extractClientAndServer(filePath) {
-  const fileContent = (0, import_fs.readFileSync)(`${filePath}`, "utf-8");
-  const imports = fileContent.match(/^import .*?;$/gm)?.join("\n") ?? "";
+function extractClientAndServer(filePath2) {
+  const fileContent = (0, import_fs.readFileSync)(`${filePath2}`, "utf-8");
+  const imports2 = fileContent.match(/^import .*?;$/gm)?.join("\n") ?? "";
   const clientBlock = extractClassBlock(fileContent, "@Client");
   const serverBlock = extractClassBlock(fileContent, "@Server");
   return {
-    client: `${imports}
+    client: `${imports2}
 
 ${clientBlock}`.trim(),
-    server: `${imports}
+    server: `${imports2}
 
 ${serverBlock}`.trim()
   };
@@ -162,24 +162,25 @@ global.nestReactBuild = { Client: {}, Server: {}, use: {} };
 async function Engine(filePath, options = {}, callback) {
   const { client } = extractClientAndServer(`${filePath}`);
   await import(filePath.replace("src/views", "dist/views").replace(".tsx", ".js"));
-  const { components: components2, imports } = extractClientComponentsAndModules(client, global.nestReactBuild.use);
-  const Client2 = {};
-  Object.keys(components2).map((k) => {
-    Client2[k] = function(props) {
+  const { components, imports } = extractClientComponentsAndModules(client, global.nestReactBuild.use);
+  const Client = {};
+  Object.keys(components).map((k) => {
+    Client[k] = function(props) {
       const config = {
         props,
-        body: tsToJsString(`${components2[k].component}`),
-        type: components2[k].componentType,
-        id: `Elm-${k}`
+        body: tsToJsString(`${components[k].component}`),
+        type: components[k].componentType,
+        id: `Elm-${k}`,
+        modules: Object.keys(Object(eval(`${imports}`))).map((k2) => k2).join(", ")
       };
       return import_react.default.createElement(import_react.default.Fragment, null, [
-        import_react.default.createElement(components2[k].componentType.slice(1, -1), { id: config.id, key: 1 }),
+        import_react.default.createElement(components[k].componentType.slice(1, -1), { id: config.id, key: 1 }),
         import_react.default.createElement("script", { "nestclient": JSON.stringify(config), key: 2 })
       ]);
     };
   });
   const element = await global.nestReactBuild.Server.render({
-    Client: Client2,
+    Client,
     props: options
   });
   return callback(null, `<!DOCTYPE html><script defer>${buildClientFromString(`${imports}${(0, import_fs2.readFileSync)((0, import_path.join)(__dirname, "../client/client.tsx")).toString()}`)}</script>` + import_server.default.renderToString(element));
@@ -205,7 +206,7 @@ function Render() {
     };
   };
 }
-function Client() {
+function Client2() {
   return function(constructor) {
     const instance = new constructor();
     const collected = {};
