@@ -152,7 +152,7 @@ export function Server() {
 
 			}
 			// Add modules to the global server build object
-			globalThis.nestReactBuild.Server = { ...globalThis.nestReactBuild.Server, ...proto.__modules };
+			globalThis.nestReactBuild.Server = { ...globalThis.nestReactBuild.Server };
 		}
 
 		// Store methods in the global object

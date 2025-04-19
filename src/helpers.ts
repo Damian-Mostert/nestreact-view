@@ -4,14 +4,14 @@ export function extractClientComponentsAndModules(source: string,nestReactBuild:
 	const components: Record<string, { type: string; component: string,componentType:string }> = {};
 	let importLines = "";
 	const clientClassRegex =
-		/@Client\(\)\s*@Use\([\s\S]*?\)\s*class\s+([A-Za-z0-9_]+)\s*{([\s\S]*?)^\}/gm;
+	/@Client\(\)\s*@Use\(([\s\S]*?)\)\s*class\s+([A-Za-z0-9_]+)\s*{([\s\S]*?)^\}/gm;
 	const clientMatch = clientClassRegex.exec(source);
 
 	if (!clientMatch) return { components, imports: "" };
 	const [, useBody, className, classBody] = clientMatch;
 	try {
-		const useObj =nestReactBuild.use;
-		console.log(useObj)
+		console.log(useBody,global.nestReactBuild.use)
+		const useObj =global.nestReactBuild.use;
 		importLines = Object.entries(useObj?useObj:{})
 			.map(([key, mod]) => String(mod).includes("./")||String(mod).includes("@")?`import ${key} from "${mod}";`: `import * as ${key} from "${mod}";`)
 			.join("\n");
