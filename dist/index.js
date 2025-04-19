@@ -52,8 +52,7 @@ function extractClientComponentsAndModules(source, nestReactBuild) {
   if (!clientMatch) return { components, imports: "" };
   const [, useBody, className, classBody] = clientMatch;
   try {
-    console.log(useBody, nestReactBuild.use);
-    const useObj = nestReactBuild.use;
+    const useObj = eval(`(${useBody})`);
     importLines = Object.entries(useObj ? useObj : {}).map(([key, mod]) => String(mod).includes("./") || String(mod).includes("@") ? `import ${key} from "${mod}";` : `import * as ${key} from "${mod}";`).join("\n");
   } catch (err) {
     console.error("Failed to parse @Use body:", err);
@@ -143,18 +142,18 @@ function tsToJsString(tsxCode) {
 async function Engine(filePath, options = {}, callback) {
   const { client } = extractClientAndServer(`${filePath}`);
   await import(filePath.replace("src/views", "dist/views").replace(".tsx", ".js"));
-  const { components } = extractClientComponentsAndModules(client, global.nestReactBuild.use);
+  const { components: components2 } = extractClientComponentsAndModules(client, global.nestReactBuild.use);
   const Client2 = {};
-  Object.keys(components).map((k) => {
+  Object.keys(components2).map((k) => {
     Client2[k] = function(props) {
       const config = {
         props,
-        body: tsToJsString(`${components[k].component}`),
-        type: components[k].componentType,
+        body: tsToJsString(`${components2[k].component}`),
+        type: components2[k].componentType,
         id: `Elm-${k}`
       };
       return import_react.default.createElement(import_react.default.Fragment, null, [
-        import_react.default.createElement(components[k].componentType.slice(1, -1), { id: config.id, key: 1 }),
+        import_react.default.createElement(components2[k].componentType.slice(1, -1), { id: config.id, key: 1 }),
         import_react.default.createElement("script", { "nestclient": JSON.stringify(config), key: 2 })
       ]);
     };
