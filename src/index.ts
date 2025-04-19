@@ -4,10 +4,11 @@ declare global {
 	var nestReactBuild: {
 		Client: Record<string, any>;
 		Server: Record<string, any>;
+		use:any;
 	};
 }
 
-global.nestReactBuild={Client:{},Server:{}}
+global.nestReactBuild={Client:{},Server:{},use:{}}
 
 import {extractClientAndServer, extractClientComponentsAndModules} from "./helpers";
 import React from "react";
@@ -178,7 +179,7 @@ export function Use(modules: { [key: string]: string }) {
 			}
 			else proto.__modules.use[key] = module
 		}
-
+		global.nestReactBuild.use = proto.__modules;
 	};
 }
 
