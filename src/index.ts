@@ -39,6 +39,7 @@ async function Engine(filePath:string, options:any = {}, callback:(err:any,respo
 	const {client} = extractClientAndServer(`${filePath}`);
 	(await import(filePath.replace("src/views","dist/views").replace(".tsx",".js")));
 	const {components,imports} = extractClientComponentsAndModules(client) 
+	console.log(imports)
 	const Client:any = {};
 	Object.keys(components).map(k=>{
 		Client[k] = function(props:any){
