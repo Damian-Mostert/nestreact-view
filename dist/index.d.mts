@@ -4,7 +4,7 @@ declare global {
     var nestReactBuild: {
         Client: Record<string, any>;
         Server: Record<string, any>;
-        use: any;
+        use: Record<string, any>;
     };
 }
 

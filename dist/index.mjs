@@ -1,7 +1,7 @@
 import {
   extractClientAndServer,
   extractClientComponentsAndModules
-} from "./chunk-7H2K7QKH.mjs";
+} from "./chunk-4Z2OLALW.mjs";
 
 // src/index.ts
 import ReactDOMServer from "react-dom/server";
@@ -119,7 +119,7 @@ function Server() {
         } catch (err) {
         }
       }
-      globalThis.nestReactBuild.Server = { ...globalThis.nestReactBuild.Server, ...proto.__modules };
+      globalThis.nestReactBuild.Server = { ...globalThis.nestReactBuild.Server };
     }
     globalThis.nestReactBuild.Server = { ...globalThis.nestReactBuild.Server, ...collected };
   };

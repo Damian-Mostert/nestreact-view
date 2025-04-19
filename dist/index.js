@@ -47,13 +47,13 @@ var import_fs = require("fs");
 function extractClientComponentsAndModules(source, nestReactBuild) {
   const components = {};
   let importLines = "";
-  const clientClassRegex = /@Client\(\)\s*@Use\([\s\S]*?\)\s*class\s+([A-Za-z0-9_]+)\s*{([\s\S]*?)^\}/gm;
+  const clientClassRegex = /@Client\(\)\s*@Use\(([\s\S]*?)\)\s*class\s+([A-Za-z0-9_]+)\s*{([\s\S]*?)^\}/gm;
   const clientMatch = clientClassRegex.exec(source);
   if (!clientMatch) return { components, imports: "" };
   const [, useBody, className, classBody] = clientMatch;
   try {
+    console.log(useBody, nestReactBuild.use);
     const useObj = nestReactBuild.use;
-    console.log(useObj);
     importLines = Object.entries(useObj ? useObj : {}).map(([key, mod]) => String(mod).includes("./") || String(mod).includes("@") ? `import ${key} from "${mod}";` : `import * as ${key} from "${mod}";`).join("\n");
   } catch (err) {
     console.error("Failed to parse @Use body:", err);
@@ -232,7 +232,7 @@ function Server() {
         } catch (err) {
         }
       }
-      globalThis.nestReactBuild.Server = { ...globalThis.nestReactBuild.Server, ...proto.__modules };
+      globalThis.nestReactBuild.Server = { ...globalThis.nestReactBuild.Server };
     }
     globalThis.nestReactBuild.Server = { ...globalThis.nestReactBuild.Server, ...collected };
   };
