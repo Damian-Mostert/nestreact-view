@@ -1,6 +1,6 @@
 {
   "name": "nestreact-view",
-  "version": "0.0.40",
+  "version": "0.0.41",
   "main": "./dist/index.js",
   "types": "./dist/index.ts",
   "exports": {
