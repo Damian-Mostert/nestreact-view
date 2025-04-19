@@ -47,13 +47,13 @@ var import_fs = require("fs");
 function extractClientComponentsAndModules(source) {
   const components = {};
   let importLines = "";
-  const clientClassRegex = /@Client\(\)\s*@Use\(([\s\S]*?)\)\s*class\s+([A-Za-z0-9_]+)\s*{([\s\S]*?)^\}/gm;
+  const clientClassRegex = /@Client\(\)\s*@Use\([\s\S]*?\)\s*class\s+([A-Za-z0-9_]+)\s*{([\s\S]*?)^\}/gm;
   const clientMatch = clientClassRegex.exec(source);
   if (!clientMatch) return { components, imports: "" };
   const [, useBody, className, classBody] = clientMatch;
   try {
-    const useObj = eval(`(${useBody})`);
-    importLines = Object.entries(useObj).map(([key, mod]) => String(mod).includes("./") ? `import ${key} from "${mod}";` : `import * as ${key} from "${mod}";`).join("\n");
+    const useObj = global.nestReactBuild.Client.use;
+    importLines = Object.entries(useObj ? useObj : {}).map(([key, mod]) => String(mod).includes("./") || String(mod).includes("@") ? `import ${key} from "${mod}";` : `import * as ${key} from "${mod}";`).join("\n");
   } catch (err) {
     console.error("Failed to parse @Use body:", err);
   }
@@ -107,7 +107,9 @@ function extractClientAndServer(filePath) {
   const clientBlock = extractClassBlock(fileContent, "@Client");
   const serverBlock = extractClassBlock(fileContent, "@Server");
   return {
-    client: `${clientBlock}`.trim(),
+    client: `${imports}
+
+${clientBlock}`.trim(),
     server: `${imports}
 
 ${serverBlock}`.trim()
@@ -119,12 +121,12 @@ var import_react = __toESM(require("react"));
 var import_fs2 = require("fs");
 var import_path = require("path");
 var import_esbuild = __toESM(require("esbuild"));
-global.nestReactBuild = { Client: {}, Server: {} };
+global.nestReactBuild = { Client: {}, Server: {}, use: {} };
 var script = [
   "/__nestreact.js",
   (req, res) => {
     res.setHeader("Content-Type", "application/javascript");
-    res.send((0, import_fs2.readFileSync)((0, import_path.join)(__dirname, "./client.js")).toString());
+    res.send(`${(0, import_fs2.readFileSync)((0, import_path.join)(__dirname, "./client.js")).toString()}`);
   }
 ];
 function tsToJsString(tsxCode) {
@@ -140,19 +142,19 @@ function tsToJsString(tsxCode) {
 async function Engine(filePath, options = {}, callback) {
   const { client } = extractClientAndServer(`${filePath}`);
   await import(filePath.replace("src/views", "dist/views").replace(".tsx", ".js"));
-  const { components: components2 } = extractClientComponentsAndModules(client);
+  const { components, imports } = extractClientComponentsAndModules(client);
   const Client2 = {};
-  Object.keys(components2).map((k) => {
+  Object.keys(components).map((k) => {
     Client2[k] = function(props) {
       const config = {
         props,
-        body: tsToJsString(components2[k].component),
-        type: components2[k].componentType,
+        body: tsToJsString(`${imports};${components[k].component}`),
+        type: components[k].componentType,
         id: `Elm-${k}`
       };
       return import_react.default.createElement(import_react.default.Fragment, null, [
-        import_react.default.createElement(components2[k].componentType.slice(1, -1), { id: config.id }),
-        import_react.default.createElement("script", { "nestclient": JSON.stringify(config) })
+        import_react.default.createElement(components[k].componentType.slice(1, -1), { id: config.id, key: 1 }),
+        import_react.default.createElement("script", { "nestclient": JSON.stringify(config), key: 2 })
       ]);
     };
   });
@@ -245,6 +247,7 @@ function Use(modules) {
         proto.__modules.use = bld;
       } else proto.__modules.use[key] = module2;
     }
+    global.nestReactBuild.use = proto.__modules;
   };
 }
 // Annotate the CommonJS export names for ESM import in node:

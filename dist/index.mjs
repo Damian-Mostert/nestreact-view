@@ -1,7 +1,7 @@
 import {
   extractClientAndServer,
   extractClientComponentsAndModules
-} from "./chunk-6WBN6RS3.mjs";
+} from "./chunk-CF3QUG5P.mjs";
 
 // src/index.ts
 import ReactDOMServer from "react-dom/server";
@@ -9,12 +9,12 @@ import React from "react";
 import { readFileSync } from "fs";
 import { join } from "path";
 import esbuild from "esbuild";
-global.nestReactBuild = { Client: {}, Server: {} };
+global.nestReactBuild = { Client: {}, Server: {}, use: {} };
 var script = [
   "/__nestreact.js",
   (req, res) => {
     res.setHeader("Content-Type", "application/javascript");
-    res.send(readFileSync(join(__dirname, "./client.js")).toString());
+    res.send(`${readFileSync(join(__dirname, "./client.js")).toString()}`);
   }
 ];
 function tsToJsString(tsxCode) {
@@ -30,19 +30,19 @@ function tsToJsString(tsxCode) {
 async function Engine(filePath, options = {}, callback) {
   const { client } = extractClientAndServer(`${filePath}`);
   await import(filePath.replace("src/views", "dist/views").replace(".tsx", ".js"));
-  const { components } = extractClientComponentsAndModules(client);
+  const { components, imports } = extractClientComponentsAndModules(client);
   const Client2 = {};
   Object.keys(components).map((k) => {
     Client2[k] = function(props) {
       const config = {
         props,
-        body: tsToJsString(components[k].component),
+        body: tsToJsString(`${imports};${components[k].component}`),
         type: components[k].componentType,
         id: `Elm-${k}`
       };
       return React.createElement(React.Fragment, null, [
-        React.createElement(components[k].componentType.slice(1, -1), { id: config.id }),
-        React.createElement("script", { "nestclient": JSON.stringify(config) })
+        React.createElement(components[k].componentType.slice(1, -1), { id: config.id, key: 1 }),
+        React.createElement("script", { "nestclient": JSON.stringify(config), key: 2 })
       ]);
     };
   });
@@ -135,6 +135,7 @@ function Use(modules) {
         proto.__modules.use = bld;
       } else proto.__modules.use[key] = module;
     }
+    global.nestReactBuild.use = proto.__modules;
   };
 }
 export {
