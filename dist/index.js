@@ -125,14 +125,12 @@ function buildClientFromString(code) {
     const result = (0, import_esbuild.buildSync)({
       stdin: {
         contents: code,
-        resolveDir: process.cwd(),
-        sourcefile: "client.tsx",
-        loader: "tsx"
+        resolveDir: process.cwd()
       },
       bundle: true,
-      minify: true,
-      sourcemap: false,
+      minify: false,
       write: false,
+      sourcemap: false,
       target: ["es2017"],
       format: "iife",
       platform: "browser"
