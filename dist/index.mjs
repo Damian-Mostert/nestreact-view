@@ -1,7 +1,7 @@
 import {
   extractClientAndServer,
   extractClientComponentsAndModules
-} from "./chunk-CF3QUG5P.mjs";
+} from "./chunk-2U2DUGOH.mjs";
 
 // src/index.ts
 import ReactDOMServer from "react-dom/server";
@@ -9,7 +9,7 @@ import React from "react";
 import { readFileSync } from "fs";
 import { join } from "path";
 import esbuild from "esbuild";
-global.nestReactBuild = { Client: {}, Server: {}, use: {} };
+nestReactBuild = { Client: {}, Server: {}, use: {} };
 var script = [
   "/__nestreact.js",
   (req, res) => {
@@ -30,13 +30,13 @@ function tsToJsString(tsxCode) {
 async function Engine(filePath, options = {}, callback) {
   const { client } = extractClientAndServer(`${filePath}`);
   await import(filePath.replace("src/views", "dist/views").replace(".tsx", ".js"));
-  const { components, imports } = extractClientComponentsAndModules(client);
+  const { components } = extractClientComponentsAndModules(client, global.nestReactBuild.use);
   const Client2 = {};
   Object.keys(components).map((k) => {
     Client2[k] = function(props) {
       const config = {
         props,
-        body: tsToJsString(`${imports};${components[k].component}`),
+        body: tsToJsString(`${components[k].component}`),
         type: components[k].componentType,
         id: `Elm-${k}`
       };
@@ -125,6 +125,7 @@ function Server() {
   };
 }
 function Use(modules) {
+  global.nestReactBuild.use = modules;
   return function(constructor) {
     const proto = constructor.prototype;
     proto.__modules = proto.__modules || {};
@@ -135,7 +136,6 @@ function Use(modules) {
         proto.__modules.use = bld;
       } else proto.__modules.use[key] = module;
     }
-    global.nestReactBuild.use = proto.__modules;
   };
 }
 export {

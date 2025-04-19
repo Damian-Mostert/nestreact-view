@@ -1,5 +1,4 @@
 import ReactDOMServer from "react-dom/server";
-import BuildClient from "../client/build-imports.js"
 declare global {
 	var nestReactBuild: {
 		Client: Record<string, any>;
@@ -8,7 +7,7 @@ declare global {
 	};
 }
 
-global.nestReactBuild={Client:{},Server:{},use:{}}
+nestReactBuild={Client:{},Server:{},use:{}}
 
 import {extractClientAndServer, extractClientComponentsAndModules} from "./helpers";
 import React from "react";
@@ -39,13 +38,13 @@ export function tsToJsString(tsxCode: string): string {
 async function Engine(filePath:string, options:any = {}, callback:(err:any,response?:string)=>void) {
 	const {client} = extractClientAndServer(`${filePath}`);
 	(await import(filePath.replace("src/views","dist/views").replace(".tsx",".js")));
-	const {components,imports} = extractClientComponentsAndModules(client) 
+	const {components} = extractClientComponentsAndModules(client,global.nestReactBuild.use) 
 	const Client:any = {};
 	Object.keys(components).map(k=>{
 		Client[k] = function(props:any){
 			const config = {
 				props,
-				body:tsToJsString(`${imports};${components[k].component}`),
+				body:tsToJsString(`${components[k].component}`),
 				type:components[k].componentType,
 				id:`Elm-${k}`,
 			}
@@ -163,6 +162,8 @@ export function Server() {
 
 // -- Use Decorator (to be used inside Client or Server decorator)
 export function Use(modules: { [key: string]: string }) {
+	global.nestReactBuild.use = modules;
+
 	return function (constructor: Function) {
 		const proto = constructor.prototype;
 
@@ -179,7 +180,6 @@ export function Use(modules: { [key: string]: string }) {
 			}
 			else proto.__modules.use[key] = module
 		}
-		global.nestReactBuild.use = proto.__modules;
 	};
 }
 

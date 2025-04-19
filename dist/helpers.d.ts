@@ -1,4 +1,4 @@
-declare function extractClientComponentsAndModules(source: string): {
+declare function extractClientComponentsAndModules(source: string, nestReactBuild: any): {
     components: Record<string, {
         type: string;
         component: string;

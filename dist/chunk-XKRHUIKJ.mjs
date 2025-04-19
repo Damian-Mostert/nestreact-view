@@ -3,13 +3,13 @@ import { readFileSync } from "fs";
 function extractClientComponentsAndModules(source) {
   const components = {};
   let importLines = "";
-  const clientClassRegex = /@Client\(\)\s*@Use\(([\s\S]*?)\)\s*class\s+([A-Za-z0-9_]+)\s*{([\s\S]*?)^\}/gm;
+  const clientClassRegex = /@Client\(\)\s*@Use\([\s\S]*?\)\s*class\s+([A-Za-z0-9_]+)\s*{([\s\S]*?)^\}/gm;
   const clientMatch = clientClassRegex.exec(source);
   if (!clientMatch) return { components, imports: "" };
   const [, useBody, className, classBody] = clientMatch;
   try {
-    const useObj = eval(`(${useBody})`);
-    importLines = Object.entries(useObj).map(([key, mod]) => String(mod).includes("./") ? `import ${key} from "${mod}";` : `import * as ${key} from "${mod}";`).join("\n");
+    const useObj = global.nestReactBuild.use;
+    importLines = Object.entries(useObj ? useObj : {}).map(([key, mod]) => String(mod).includes("./") || String(mod).includes("@") ? `import ${key} from "${mod}";` : `import * as ${key} from "${mod}";`).join("\n");
   } catch (err) {
     console.error("Failed to parse @Use body:", err);
   }
@@ -63,7 +63,9 @@ function extractClientAndServer(filePath) {
   const clientBlock = extractClassBlock(fileContent, "@Client");
   const serverBlock = extractClassBlock(fileContent, "@Server");
   return {
-    client: `${clientBlock}`.trim(),
+    client: `${imports}
+
+${clientBlock}`.trim(),
     server: `${imports}
 
 ${serverBlock}`.trim()

@@ -1,31 +1,6 @@
-"use strict";
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
 // src/helpers.ts
-var helpers_exports = {};
-__export(helpers_exports, {
-  extractClientAndServer: () => extractClientAndServer,
-  extractClientComponentsAndModules: () => extractClientComponentsAndModules
-});
-module.exports = __toCommonJS(helpers_exports);
-var import_fs = require("fs");
-function extractClientComponentsAndModules(source, nestReactBuild) {
+import { readFileSync } from "fs";
+function extractClientComponentsAndModules(source) {
   const components = {};
   let importLines = "";
   const clientClassRegex = /@Client\(\)\s*@Use\([\s\S]*?\)\s*class\s+([A-Za-z0-9_]+)\s*{([\s\S]*?)^\}/gm;
@@ -83,7 +58,7 @@ function extractClassBlock(content, decorator) {
   return sliced.slice(0, end + 1);
 }
 function extractClientAndServer(filePath) {
-  const fileContent = (0, import_fs.readFileSync)(`${filePath}`, "utf-8");
+  const fileContent = readFileSync(`${filePath}`, "utf-8");
   const imports = fileContent.match(/^import .*?;$/gm)?.join("\n") ?? "";
   const clientBlock = extractClassBlock(fileContent, "@Client");
   const serverBlock = extractClassBlock(fileContent, "@Server");
@@ -96,8 +71,8 @@ ${clientBlock}`.trim(),
 ${serverBlock}`.trim()
   };
 }
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  extractClientAndServer,
-  extractClientComponentsAndModules
-});
+
+export {
+  extractClientComponentsAndModules,
+  extractClientAndServer
+};

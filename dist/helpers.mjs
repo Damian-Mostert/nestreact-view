@@ -1,7 +1,7 @@
 import {
   extractClientAndServer,
   extractClientComponentsAndModules
-} from "./chunk-CF3QUG5P.mjs";
+} from "./chunk-2U2DUGOH.mjs";
 export {
   extractClientAndServer,
   extractClientComponentsAndModules

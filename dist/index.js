@@ -44,7 +44,7 @@ var import_server = __toESM(require("react-dom/server"));
 
 // src/helpers.ts
 var import_fs = require("fs");
-function extractClientComponentsAndModules(source) {
+function extractClientComponentsAndModules(source, nestReactBuild2) {
   const components = {};
   let importLines = "";
   const clientClassRegex = /@Client\(\)\s*@Use\([\s\S]*?\)\s*class\s+([A-Za-z0-9_]+)\s*{([\s\S]*?)^\}/gm;
@@ -52,7 +52,7 @@ function extractClientComponentsAndModules(source) {
   if (!clientMatch) return { components, imports: "" };
   const [, useBody, className, classBody] = clientMatch;
   try {
-    const useObj = global.nestReactBuild.Client.use;
+    const useObj = nestReactBuild2?.use;
     importLines = Object.entries(useObj ? useObj : {}).map(([key, mod]) => String(mod).includes("./") || String(mod).includes("@") ? `import ${key} from "${mod}";` : `import * as ${key} from "${mod}";`).join("\n");
   } catch (err) {
     console.error("Failed to parse @Use body:", err);
@@ -121,7 +121,7 @@ var import_react = __toESM(require("react"));
 var import_fs2 = require("fs");
 var import_path = require("path");
 var import_esbuild = __toESM(require("esbuild"));
-global.nestReactBuild = { Client: {}, Server: {}, use: {} };
+nestReactBuild = { Client: {}, Server: {}, use: {} };
 var script = [
   "/__nestreact.js",
   (req, res) => {
@@ -142,13 +142,13 @@ function tsToJsString(tsxCode) {
 async function Engine(filePath, options = {}, callback) {
   const { client } = extractClientAndServer(`${filePath}`);
   await import(filePath.replace("src/views", "dist/views").replace(".tsx", ".js"));
-  const { components, imports } = extractClientComponentsAndModules(client);
+  const { components } = extractClientComponentsAndModules(client, global.nestReactBuild.use);
   const Client2 = {};
   Object.keys(components).map((k) => {
     Client2[k] = function(props) {
       const config = {
         props,
-        body: tsToJsString(`${imports};${components[k].component}`),
+        body: tsToJsString(`${components[k].component}`),
         type: components[k].componentType,
         id: `Elm-${k}`
       };
@@ -237,6 +237,7 @@ function Server() {
   };
 }
 function Use(modules) {
+  global.nestReactBuild.use = modules;
   return function(constructor) {
     const proto = constructor.prototype;
     proto.__modules = proto.__modules || {};
@@ -247,7 +248,6 @@ function Use(modules) {
         proto.__modules.use = bld;
       } else proto.__modules.use[key] = module2;
     }
-    global.nestReactBuild.use = proto.__modules;
   };
 }
 // Annotate the CommonJS export names for ESM import in node:

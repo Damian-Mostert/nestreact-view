@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 
-export function extractClientComponentsAndModules(source: string) {
+export function extractClientComponentsAndModules(source: string,nestReactBuild:any) {
 	const components: Record<string, { type: string; component: string,componentType:string }> = {};
 	let importLines = "";
 	const clientClassRegex =
@@ -10,7 +10,8 @@ export function extractClientComponentsAndModules(source: string) {
 	if (!clientMatch) return { components, imports: "" };
 	const [, useBody, className, classBody] = clientMatch;
 	try {
-		const useObj:any =global.nestReactBuild.use;
+		const useObj =nestReactBuild?.use;
+
 		importLines = Object.entries(useObj?useObj:{})
 			.map(([key, mod]) => String(mod).includes("./")||String(mod).includes("@")?`import ${key} from "${mod}";`: `import * as ${key} from "${mod}";`)
 			.join("\n");
