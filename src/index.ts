@@ -38,7 +38,7 @@ async function Engine(filePath:string, options:any = {}, callback:(err:any,respo
 		Client,
 		props:options
 	})
-	return callback(null, `<!DOCTYPE html><script defer>${buildClientFromString(readFileSync(join(__dirname,"../client/client.tsx")).toString())}</script>` + ReactDOMServer.renderToString(element))
+	return callback(null, `<!DOCTYPE html><script defer>${buildClientFromString(`${imports}${readFileSync(join(__dirname,"../client/client.tsx")).toString()}`)}</script>` + ReactDOMServer.renderToString(element))
 }
 export default Engine;
 // -- Component Decorator

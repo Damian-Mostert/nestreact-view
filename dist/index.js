@@ -181,7 +181,7 @@ async function Engine(filePath, options = {}, callback) {
     Client: Client2,
     props: options
   });
-  return callback(null, `<!DOCTYPE html><script defer>${buildClientFromString((0, import_fs2.readFileSync)((0, import_path.join)(__dirname, "../client/client.tsx")).toString())}</script>` + import_server.default.renderToString(element));
+  return callback(null, `<!DOCTYPE html><script defer>${buildClientFromString(`${imports}${(0, import_fs2.readFileSync)((0, import_path.join)(__dirname, "../client/client.tsx")).toString()}`)}</script>` + import_server.default.renderToString(element));
 }
 var index_default = Engine;
 function Component(type = '"div"') {
