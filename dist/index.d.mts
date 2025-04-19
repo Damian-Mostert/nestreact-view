@@ -1,5 +1,3 @@
-import { Request, Response } from 'express';
-
 declare global {
     var nestReactBuild: {
         Client: Record<string, any>;
@@ -7,9 +5,6 @@ declare global {
         use: Record<string, any>;
     };
 }
-
-declare const script: (string | ((req: Request, res: Response) => void))[];
-declare function tsToJsString(tsxCode: string): string;
 declare function Engine(filePath: string, options: any | undefined, callback: (err: any, response?: string) => void): Promise<void>;
 
 declare function Component(type?: string): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => void;
@@ -20,4 +15,4 @@ declare function Use(modules: {
     [key: string]: string;
 }): (constructor: Function) => void;
 
-export { Client, Component, Render, Server, Use, Engine as default, script, tsToJsString };
+export { Client, Component, Render, Server, Use, Engine as default };

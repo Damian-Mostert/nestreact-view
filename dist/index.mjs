@@ -6,19 +6,35 @@ import {
 // src/index.ts
 import ReactDOMServer from "react-dom/server";
 import React from "react";
-import { readFileSync } from "fs";
-import { join } from "path";
-import esbuild from "esbuild";
-global.nestReactBuild = { Client: {}, Server: {}, use: {} };
-var script = [
-  "/__nestreact.js",
-  (req, res) => {
-    res.setHeader("Content-Type", "application/javascript");
-    res.send(`${readFileSync(join(__dirname, "./client.js")).toString()}`);
+
+// client/build.ts
+import { buildSync, transformSync } from "esbuild";
+function buildClientFromString(code) {
+  try {
+    const result = buildSync({
+      stdin: {
+        contents: code,
+        resolveDir: process.cwd(),
+        sourcefile: "client.tsx",
+        loader: "tsx"
+      },
+      bundle: true,
+      minify: true,
+      sourcemap: false,
+      write: false,
+      target: ["es2017"],
+      format: "iife",
+      platform: "browser"
+    });
+    const output = result.outputFiles[0].text;
+    return output;
+  } catch (err) {
+    console.error("\u274C Build failed:", err);
+    throw err;
   }
-];
+}
 function tsToJsString(tsxCode) {
-  const result = esbuild.transformSync(tsxCode, {
+  const result = transformSync(tsxCode, {
     loader: "tsx",
     format: "esm",
     jsx: "transform",
@@ -27,6 +43,11 @@ function tsToJsString(tsxCode) {
   });
   return result.code;
 }
+
+// src/index.ts
+import { readFileSync } from "fs";
+import { join } from "path";
+global.nestReactBuild = { Client: {}, Server: {}, use: {} };
 async function Engine(filePath, options = {}, callback) {
   const { client } = extractClientAndServer(`${filePath}`);
   await import(filePath.replace("src/views", "dist/views").replace(".tsx", ".js"));
@@ -36,7 +57,7 @@ async function Engine(filePath, options = {}, callback) {
     Client2[k] = function(props) {
       const config = {
         props,
-        body: tsToJsString(`${imports};${components[k].component}`),
+        body: tsToJsString(`${components[k].component}`),
         type: components[k].componentType,
         id: `Elm-${k}`
       };
@@ -50,7 +71,7 @@ async function Engine(filePath, options = {}, callback) {
     Client: Client2,
     props: options
   });
-  return callback(null, `<!DOCTYPE html><script src="${script[0]}" defer></script>` + ReactDOMServer.renderToString(element));
+  return callback(null, `<!DOCTYPE html><script defer>${buildClientFromString(readFileSync(join(__dirname, "../client/client.tsx")).toString())}</script>` + ReactDOMServer.renderToString(element));
 }
 var index_default = Engine;
 function Component(type = '"div"') {
@@ -144,7 +165,5 @@ export {
   Render,
   Server,
   Use,
-  index_default as default,
-  script,
-  tsToJsString
+  index_default as default
 };

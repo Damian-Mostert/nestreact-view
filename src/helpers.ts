@@ -18,7 +18,6 @@ export function extractClientComponentsAndModules(source: string,nestReactBuild:
 		console.error("Failed to parse @Use body:", err);
 	}
 
-	// 3. Extract all @Component() methods with full body brace matching
 	const componentStartRegex = /@Component\s*\(([^)]*)\)?\s*(\w+)\s*\(([^)]*)\)\s*{/g;
 
 	let match;

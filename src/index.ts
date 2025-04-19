@@ -11,40 +11,20 @@ global.nestReactBuild={Client:{},Server:{},use:{}}
 
 import {extractClientAndServer, extractClientComponentsAndModules} from "./helpers";
 import React from "react";
-import { Request, Response } from "express";
+import { buildClientFromString, tsToJsString } from '../client/build';
 import { readFileSync } from "fs";
 import { join } from "path";
-export const script = [
-	"/__nestreact.js",
-	(req:Request,res:Response)=>{
-		res.setHeader("Content-Type", "application/javascript");
-		res.send(`${readFileSync(join(__dirname,"./client.js")).toString()}`);
-	}
-]
-import esbuild from 'esbuild';
-
-export function tsToJsString(tsxCode: string): string {
-  const result = esbuild.transformSync(tsxCode, {
-    loader: 'tsx',
-    format: 'esm',
-    jsx: 'transform',
-    minify: true,
-    target: 'es2015',
-  });
-
-  return result.code;
-}
 
 async function Engine(filePath:string, options:any = {}, callback:(err:any,response?:string)=>void) {
 	const {client} = extractClientAndServer(`${filePath}`);
 	(await import(filePath.replace("src/views","dist/views").replace(".tsx",".js")));
-	const {components,imports} = extractClientComponentsAndModules(client,global.nestReactBuild.use) 
+	const {components,imports} = extractClientComponentsAndModules(client,global.nestReactBuild.use);
 	const Client:any = {};
 	Object.keys(components).map(k=>{
 		Client[k] = function(props:any){
 			const config = {
 				props,
-				body:tsToJsString(`${imports};${components[k].component}`),
+				body:tsToJsString(`${components[k].component}`),
 				type:components[k].componentType,
 				id:`Elm-${k}`,
 			}
@@ -58,7 +38,7 @@ async function Engine(filePath:string, options:any = {}, callback:(err:any,respo
 		Client,
 		props:options
 	})
-	return callback(null, `<!DOCTYPE html><script src="${script[0]}" defer></script>` + ReactDOMServer.renderToString(element))
+	return callback(null, `<!DOCTYPE html><script defer>${buildClientFromString(readFileSync(join(__dirname,"../client/client.tsx")).toString())}</script>` + ReactDOMServer.renderToString(element))
 }
 export default Engine;
 // -- Component Decorator

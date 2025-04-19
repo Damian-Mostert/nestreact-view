@@ -35,8 +35,6 @@ import Engine,{script} from 'nestreact-view';
 app.set("views", join(process.cwd(),"src", "views"));
 app.engine('tsx', Engine)
 app.set("view engine", "tsx");
-//Enable client side script
-app.use(...script);
 ```
 you can now use `res.render("templateName",{props})` to render a tsx template as "src/views/${templateName}".tsx, or you can use built in nest functions to render a template:
 ```tsx
