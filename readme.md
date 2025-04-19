@@ -1,4 +1,5 @@
-# `nestreact-view`
+# nestreact-view [![npm version](https://img.shields.io/npm/v/nestreact-view)](https://www.npmjs.com/package/nestreact-view)
+
 
 **Render React views with server-side support and client-side hydration inside your NestJS or Express app.**
 
