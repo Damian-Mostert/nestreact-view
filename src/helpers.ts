@@ -10,7 +10,7 @@ export function extractClientComponentsAndModules(source: string) {
 	if (!clientMatch) return { components, imports: "" };
 	const [, useBody, className, classBody] = clientMatch;
 	try {
-		const useObj:any =global.nestReactBuild.Client.use;
+		const useObj:any =global.nestReactBuild.use;
 		importLines = Object.entries(useObj?useObj:{})
 			.map(([key, mod]) => String(mod).includes("./")||String(mod).includes("@")?`import ${key} from "${mod}";`: `import * as ${key} from "${mod}";`)
 			.join("\n");
