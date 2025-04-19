@@ -44,7 +44,7 @@ async function Engine(filePath:string, options:any = {}, callback:(err:any,respo
 		Client[k] = function(props:any){
 			const config = {
 				props,
-				body:tsToJsString(`${components[k].component}`),
+				body:tsToJsString(`${imports};${components[k].component}`),
 				type:components[k].componentType,
 				id:`Elm-${k}`,
 			}
