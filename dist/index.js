@@ -134,7 +134,8 @@ function buildClientFromString(code) {
       jsx: "transform",
       target: ["es2017"],
       format: "iife",
-      platform: "browser"
+      platform: "browser",
+      loader: { ".js": "jsx" }
     });
     const output = result.outputFiles[0].text;
     return output;

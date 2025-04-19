@@ -15,6 +15,7 @@ export function buildClientFromString(code:string) {
       target: ["es2017"],
       format: "iife",
       platform: "browser",
+      loader: { '.js': 'jsx' }
     });
 
     const output = result.outputFiles[0].text;
