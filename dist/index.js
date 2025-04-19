@@ -142,13 +142,13 @@ function tsToJsString(tsxCode) {
 async function Engine(filePath, options = {}, callback) {
   const { client } = extractClientAndServer(`${filePath}`);
   await import(filePath.replace("src/views", "dist/views").replace(".tsx", ".js"));
-  const { components: components2 } = extractClientComponentsAndModules(client, global.nestReactBuild.use);
+  const { components: components2, imports } = extractClientComponentsAndModules(client, global.nestReactBuild.use);
   const Client2 = {};
   Object.keys(components2).map((k) => {
     Client2[k] = function(props) {
       const config = {
         props,
-        body: tsToJsString(`${components2[k].component}`),
+        body: tsToJsString(`${imports};${components2[k].component}`),
         type: components2[k].componentType,
         id: `Elm-${k}`
       };
