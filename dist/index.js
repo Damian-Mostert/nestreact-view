@@ -120,6 +120,7 @@ var import_react = __toESM(require("react"));
 // client/build.ts
 var import_esbuild = require("esbuild");
 function buildClientFromString(code) {
+  console.log("in", code);
   try {
     const result = (0, import_esbuild.buildSync)({
       stdin: {
