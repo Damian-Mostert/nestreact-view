@@ -1,9 +1,9 @@
-# nestreact-view [![npm version](https://img.shields.io/npm/v/nestreact-view)](https://www.npmjs.com/package/nestreact-view)
+# nestjsx [![npm version](https://img.shields.io/npm/v/@damian88/nestjsx)](https://www.npmjs.com/package/@damian88/nestjsx)
 
 
 **Render React views with server-side support and client-side hydration inside your NestJS or Express app.**
 
-`nestreact-view` brings the power of React JSX templates to your NestJS or Express backend. It provides a decorator-based syntax for defining server-side and client-side components, full support for third-party libraries, and seamless SSR-to-hydration transitions — all with zero Webpack config or Babel setup required.
+`nestjsx` brings the power of React JSX templates to your NestJS or Express backend. It provides a decorator-based syntax for defining server-side and client-side components, full support for third-party libraries, and seamless SSR-to-hydration transitions — all with zero Webpack config or Babel setup required.
 
 ---
 
@@ -24,13 +24,13 @@
 Install via npm or yarn:
 
 ```bash
-npm install nestreact-view
+npm install nestjsx
 ```
 
 ## ⚙️ Setup
 In your nest server add the following to your main.ts
 ```ts
-import  NestReactEngin from 'nestreact-view';
+import  NestReactEngin from 'nestjsx';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
@@ -59,7 +59,7 @@ export class ApiController {
 
 ## Template Tools
 ```tsx
-import { Use, Server, Render, Client, Component } from 'nestreact-view';
+import { Use, Server, Render, Client, Component } from 'nestjsx';
 ```
 
 
@@ -151,7 +151,7 @@ Then use them in any @Component(containerElementType:string) like this, you migh
 ## Example views
 
 ```tsx
-import { Server, Render, Client, Component, Use } from 'nestreact-view';
+import { Server, Render, Client, Component, Use } from 'nestjsx';
 
 @Server()
 class $ {

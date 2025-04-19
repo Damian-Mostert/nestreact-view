@@ -1,6 +1,6 @@
 {
-  "name": "nestreact-view",
-  "version": "0.0.78",
+  "name": "@damian88/nestjsx",
+  "version": "0.0.2",
   "main": "./dist/index.js",
   "types": "./dist/index.ts",
   "exports": {
@@ -11,7 +11,10 @@
   },
   "repository": {
     "type": "github",
-    "url": "https://github.com/Damian-Mostert/nestreact-view"
+    "url": "git+https://github.com/Damian-Mostert/nestreact-view.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "keywords": [
     "nest",

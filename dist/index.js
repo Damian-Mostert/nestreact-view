@@ -35,7 +35,7 @@ __export(index_exports, {
   Render: () => Render,
   Server: () => Server,
   Use: () => Use,
-  default: () => index_default
+  default: () => NestReactEngine
 });
 module.exports = __toCommonJS(index_exports);
 var import_server = __toESM(require("react-dom/server"));
@@ -185,7 +185,11 @@ async function Engine(filePath, options = {}, callback) {
   });
   return callback(null, `<!DOCTYPE html><script id="nest_init" defer>${buildClientFromString(`${imports}${(0, import_fs2.readFileSync)((0, import_path.join)(__dirname, "../client/client.tsx")).toString().replace("{{MODULES}}", Object.keys(nestReactBuild.use).map((k) => k).join(", "))}`)};document.getElementById('nest_init').remove()</script>` + import_server.default.renderToString(element));
 }
-var index_default = Engine;
+function NestReactEngine(app) {
+  app.set("views", (0, import_path.join)(process.cwd(), "./src/views"));
+  app.engine("tsx", Engine);
+  app.set("view engine", "tsx");
+}
 function Component(type = '"div"') {
   return function(target, propertyKey, descriptor) {
     if (!target.__components) target.__components = {};

@@ -74,7 +74,11 @@ async function Engine(filePath, options = {}, callback) {
   });
   return callback(null, `<!DOCTYPE html><script id="nest_init" defer>${buildClientFromString(`${imports}${readFileSync(join(__dirname, "../client/client.tsx")).toString().replace("{{MODULES}}", Object.keys(nestReactBuild.use).map((k) => k).join(", "))}`)};document.getElementById('nest_init').remove()</script>` + ReactDOMServer.renderToString(element));
 }
-var index_default = Engine;
+function NestReactEngine(app) {
+  app.set("views", join(process.cwd(), "./src/views"));
+  app.engine("tsx", Engine);
+  app.set("view engine", "tsx");
+}
 function Component(type = '"div"') {
   return function(target, propertyKey, descriptor) {
     if (!target.__components) target.__components = {};
@@ -166,5 +170,5 @@ export {
   Render,
   Server,
   Use,
-  index_default as default
+  NestReactEngine as default
 };
