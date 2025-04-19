@@ -18,9 +18,7 @@ export const script = [
 	"/__nestreact.js",
 	(req:Request,res:Response)=>{
 		res.setHeader("Content-Type", "application/javascript");
-		res.send(`${BuildClient(`
-			import ReactParallaxTilt from "react-parallax-tilt"
-		`)}${readFileSync(join(__dirname,"./client.js")).toString()}`);
+		res.send(`${readFileSync(join(__dirname,"./client.js")).toString()}`);
 	}
 ]
 import esbuild from 'esbuild';
@@ -40,13 +38,13 @@ export function tsToJsString(tsxCode: string): string {
 async function Engine(filePath:string, options:any = {}, callback:(err:any,response?:string)=>void) {
 	const {client} = extractClientAndServer(`${filePath}`);
 	(await import(filePath.replace("src/views","dist/views").replace(".tsx",".js")));
-	const {components} = extractClientComponentsAndModules(client) 
+	const {components,imports} = extractClientComponentsAndModules(client) 
 	const Client:any = {};
 	Object.keys(components).map(k=>{
 		Client[k] = function(props:any){
 			const config = {
 				props,
-				body:tsToJsString(components[k].component),
+				body:tsToJsString(`${imports};${components[k].component}`),
 				type:components[k].componentType,
 				id:`Elm-${k}`,
 			}
