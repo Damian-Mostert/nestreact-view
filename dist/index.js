@@ -50,6 +50,7 @@ function extractClientComponentsAndModules(source, nestReactBuild) {
   if (!clientMatch) return { components, imports: "" };
   const [, useBody, className, classBody] = clientMatch;
   try {
+    if (!useBody) throw "@Client must follow with @Use";
     const useObj = eval(`(${useBody})`);
     importLines = Object.entries(useObj ? useObj : {}).map(([key, mod]) => String(mod).includes("./") || String(mod).includes("@") ? `import ${key} from "${mod}";` : `import * as ${key} from "${mod}";`).join("\n");
   } catch (err) {
