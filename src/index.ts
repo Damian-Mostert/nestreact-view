@@ -38,14 +38,13 @@ export function tsToJsString(tsxCode: string): string {
 async function Engine(filePath:string, options:any = {}, callback:(err:any,response?:string)=>void) {
 	const {client} = extractClientAndServer(`${filePath}`);
 	(await import(filePath.replace("src/views","dist/views").replace(".tsx",".js")));
-	const {components,imports} = extractClientComponentsAndModules(client) 
-	console.log(imports)
+	const {components} = extractClientComponentsAndModules(client) 
 	const Client:any = {};
 	Object.keys(components).map(k=>{
 		Client[k] = function(props:any){
 			const config = {
 				props,
-				body:tsToJsString(`${imports};${components[k].component}`),
+				body:tsToJsString(`${components[k].component}`),
 				type:components[k].componentType,
 				id:`Elm-${k}`,
 			}

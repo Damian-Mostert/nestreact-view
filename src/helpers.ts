@@ -90,7 +90,7 @@ export function extractClientAndServer(filePath: string) {
 	const serverBlock = extractClassBlock(fileContent, "@Server");
 
 	return {
-		client: `${clientBlock}`.trim(),
+		client: `${imports}\n\n${clientBlock}`.trim(),
 		server: `${imports}\n\n${serverBlock}`.trim(),
 	};
 }
