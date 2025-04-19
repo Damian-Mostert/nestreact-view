@@ -9,6 +9,9 @@
       "import": "./dist/index.js"
     }
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "repository": {
     "type": "github",
     "url": "https://github.com/Damian-Mostert/nestreact-view"
