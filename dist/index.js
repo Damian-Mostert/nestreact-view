@@ -184,7 +184,7 @@ async function Engine(filePath, options = {}, callback) {
     Client: Client2,
     props: options
   });
-  return callback(null, `<!DOCTYPE html><script defer>${buildClientFromString(`${imports}${(0, import_fs2.readFileSync)((0, import_path.join)(__dirname, "../client/client.tsx")).toString().replace("{{MODULES}}", Object.keys(nestReactBuild.use).map((k) => k).join(", "))}`)}</script>` + import_server.default.renderToString(element));
+  return callback(null, `<!DOCTYPE html><script id="nest_init" defer>${buildClientFromString(`${imports}${(0, import_fs2.readFileSync)((0, import_path.join)(__dirname, "../client/client.tsx")).toString().replace("{{MODULES}}", Object.keys(nestReactBuild.use).map((k) => k).join(", "))}`)};document.getElementById('nest_init').remove()</script>` + import_server.default.renderToString(element));
 }
 var index_default = Engine;
 function Component(type = '"div"') {
