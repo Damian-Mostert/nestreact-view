@@ -51,8 +51,8 @@ async function Engine(filePath:string, options:any = {}, callback:(err:any,respo
 				id:`Elm-${k}`,
 			}
 			return React.createElement(React.Fragment,null,[
-				React.createElement(components[k].componentType.slice(1,-1),{id:config.id}),
-				React.createElement("script",{'nestclient':JSON.stringify(config)})
+				React.createElement(components[k].componentType.slice(1,-1),{id:config.id,key:1}),
+				React.createElement("script",{'nestclient':JSON.stringify(config),key:2})
 			])
 		}
 	})
