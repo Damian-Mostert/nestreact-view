@@ -7,7 +7,7 @@ declare global {
 	};
 }
 
-nestReactBuild={Client:{},Server:{},use:{}}
+global.nestReactBuild={Client:{},Server:{},use:{}}
 
 import {extractClientAndServer, extractClientComponentsAndModules} from "./helpers";
 import React from "react";
