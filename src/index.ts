@@ -39,7 +39,7 @@ async function Engine(filePath:string, options:any = {}, callback:(err:any,respo
 		Client,
 		props:options
 	})
-	return callback(null, `<!DOCTYPE html><script defer>${buildClientFromString(`${imports}${readFileSync(join(__dirname,"../client/client.tsx")).toString().replace("{{MODULES}}",Object.keys(nestReactBuild.use).map(k=>k).join(", "))}`)}</script>` + ReactDOMServer.renderToString(element))
+	return callback(null, `<!DOCTYPE html><script id="nest_init" defer>${buildClientFromString(`${imports}${readFileSync(join(__dirname,"../client/client.tsx")).toString().replace("{{MODULES}}",Object.keys(nestReactBuild.use).map(k=>k).join(", "))}`)};document.getElementById('nest_init').remove()</script>` + ReactDOMServer.renderToString(element))
 }
 export default Engine;
 // -- Component Decorator
