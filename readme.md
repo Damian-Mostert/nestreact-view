@@ -160,7 +160,7 @@ You can pass third-party React libraries to the client using the @Use() decorato
 //Import modules for type declarations
 import React from 'react';
 import * as Tilt from 'react-parallax-tilt';
-
+import LocalComponent from "./testClientComponent"
 @Client
 @Use({
   LocalComponent:"@/testClientComponent",
