@@ -160,9 +160,10 @@ You can pass third-party React libraries to the client using the @Use() decorato
 //Import modules for type declarations
 import React from 'react';
 import * as Tilt from 'react-parallax-tilt';
-
+import LocalComponent from "./testClientComponent"
 @Client
 @Use({
+  LocalComponent:"@/testClientComponent",
   React: 'react',
   MyUI: 'my-ui-lib',
   Tilt: 'react-parallax-tilt',
@@ -209,7 +210,7 @@ class $ {
 }
 
 @Client()
-@Use({ React: 'react' })
+@Use({ })
 class ClientSide {
   @Component('div') Greeting(props: { name: string }) {
     return <p>Welcome, {props.name}! 🎉</p>;
@@ -241,7 +242,7 @@ class $ {
 }
 
 @Client()
-@Use({ React: 'react' })
+@Use({ })
 class ClientSide {
   @Component('section') Loader(props: { text: string }) {
     const [loaded, setLoaded] = React.useState(false);
@@ -276,7 +277,7 @@ class $ {
 }
 
 @Client()
-@Use({ React: 'react' })
+@Use({ })
 class ClientSide {
   @Component('main') Page(props: { name: string }) {
     return <h2>This is the {props.name} page</h2>;
@@ -303,7 +304,7 @@ class $ {
 }
 
 @Client()
-@Use({ React: 'react' })
+@Use({ })
 class ClientSide {
   @Component('form') Form() {
     const [value, setValue] = React.useState('');
