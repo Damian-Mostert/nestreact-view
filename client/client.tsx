@@ -21,7 +21,7 @@ waitForNestClientScripts((scripts) => {
       if (!id || !body) return;
 
       const Component = new Function(`React,${modules}`, `return (${body})`)(React,{{MODULES}});
-      const Wrapper = () => React.createElement(React.Fragment, null, Component(props));
+      const Wrapper = () => React.createElement(Component, props);
       const target = document.getElementById(id);
 
       if (target) {

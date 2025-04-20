@@ -1,10 +1,14 @@
 import { Client, Use, Component, Server, Render } from '@damian88/nestjsx'
+import React from 'react'
 
 @Client()
 @Use({})
 class ClientSide {
   @Component('div')
   Welcome() {
+    React.useEffect(()=>{
+      alert("welcome")
+    },[])
     return (
       <div style={{
         minHeight: '100vh',
