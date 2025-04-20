@@ -1,14 +1,20 @@
 import { Client, Use, Component, Server, Render } from '@damian88/nestjsx'
 import React from 'react'
-
 @Client()
-@Use({})
+@Use({
+
+})
 class ClientSide {
-  @Component('div')
-  Welcome() {
-    React.useEffect(()=>{
-      alert("welcome")
-    },[])
+  @Context() UserContext(){
+    const [test,setTest] = React.useState("")
+
+    return {
+      test
+    }
+  }
+  @Component('div') Welcome() {
+    const [test,setTest] = React.useState("")
+    this.UserContext
     return (
       <div style={{
         minHeight: '100vh',
@@ -57,8 +63,7 @@ class ClientSide {
 
 @Server()
 class WelcomePage {
-  @Render()
-  render({ Client ,props }: { Client: ClientSide, props:{title:string} }) {
+  @Render() render({ Client ,props }: { Client: ClientSide, props:{title:string} }) {
     return (
       <html>
         <head>

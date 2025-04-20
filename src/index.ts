@@ -46,6 +46,18 @@ export default function NestReactEngine(app:any){
 	app.engine('tsx', Engine)
 	app.set("view engine", "tsx");  
 }
+// -- Context Decorator
+export function Context(): MethodDecorator {
+	return function (target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
+	  const originalMethod = descriptor.value;
+  
+	  // Replace the method with a React hook-friendly version
+	  descriptor.value = function (...args: any[]) {
+		return originalMethod.apply(this, args);
+	  };
+  	};
+  }
+  
 // -- Component Decorator
 export function Component(type:string = '"div"') {
 	return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {

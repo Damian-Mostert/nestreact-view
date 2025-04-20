@@ -13,10 +13,15 @@ const jsx_runtime_1 = require("react/jsx-runtime");
 const nestjsx_1 = require("@damian88/nestjsx");
 const react_1 = require("react");
 let ClientSide = class ClientSide {
+    UserContext() {
+        const [test, setTest] = react_1.default.useState("");
+        return {
+            test
+        };
+    }
     Welcome() {
-        react_1.default.useEffect(() => {
-            alert("welcome");
-        }, []);
+        const [test, setTest] = react_1.default.useState("");
+        this.UserContext;
         return ((0, jsx_runtime_1.jsxs)("div", { style: {
                 minHeight: '100vh',
                 display: 'flex',
@@ -43,6 +48,12 @@ let ClientSide = class ClientSide {
                         }, children: "Get Started" }) })] }));
     }
 };
+__decorate([
+    Context(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], ClientSide.prototype, "UserContext", null);
 __decorate([
     (0, nestjsx_1.Component)('div'),
     __metadata("design:type", Function),
