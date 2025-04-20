@@ -11,8 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsx_runtime_1 = require("react/jsx-runtime");
 const nestjsx_1 = require("@damian88/nestjsx");
+const react_1 = require("react");
 let ClientSide = class ClientSide {
     Welcome() {
+        react_1.default.useEffect(() => {
+            alert("welcome");
+        }, []);
         return ((0, jsx_runtime_1.jsxs)("div", { style: {
                 minHeight: '100vh',
                 display: 'flex',
