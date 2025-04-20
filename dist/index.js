@@ -32,6 +32,7 @@ var index_exports = {};
 __export(index_exports, {
   Client: () => Client,
   Component: () => Component,
+  Context: () => Context,
   Render: () => Render,
   Server: () => Server,
   Use: () => Use,
@@ -190,6 +191,14 @@ function NestReactEngine(app) {
   app.engine("tsx", Engine);
   app.set("view engine", "tsx");
 }
+function Context() {
+  return function(target, propertyKey, descriptor) {
+    const originalMethod = descriptor.value;
+    descriptor.value = function(...args) {
+      return originalMethod.apply(this, args);
+    };
+  };
+}
 function Component(type = '"div"') {
   return function(target, propertyKey, descriptor) {
     if (!target.__components) target.__components = {};
@@ -279,6 +288,7 @@ function Use(modules) {
 0 && (module.exports = {
   Client,
   Component,
+  Context,
   Render,
   Server,
   Use

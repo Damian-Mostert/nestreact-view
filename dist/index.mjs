@@ -79,6 +79,14 @@ function NestReactEngine(app) {
   app.engine("tsx", Engine);
   app.set("view engine", "tsx");
 }
+function Context() {
+  return function(target, propertyKey, descriptor) {
+    const originalMethod = descriptor.value;
+    descriptor.value = function(...args) {
+      return originalMethod.apply(this, args);
+    };
+  };
+}
 function Component(type = '"div"') {
   return function(target, propertyKey, descriptor) {
     if (!target.__components) target.__components = {};
@@ -167,6 +175,7 @@ function Use(modules) {
 export {
   Client,
   Component,
+  Context,
   Render,
   Server,
   Use,
